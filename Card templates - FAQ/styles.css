@@ -250,6 +250,55 @@ html, body {
     font-style: italic;
 }
 
+/* 图片区域样式 */
+.image-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+    border-radius: 15px;
+    border-left: 5px solid #4CAF50;
+}
+
+.image-section .image-container {
+    margin: 15px 0 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-section .image-container img {
+    max-width: 100%;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: contain;
+    background: #f8f9fa;
+}
+
+.image-section .image-container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 如果没有图片内容的样式 */
+.image-section .image-container:empty::after {
+    content: "🖼️ 暂无图片内容";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    color: #666;
+    font-style: italic;
+    min-height: 100px;
+    width: 100%;
+}
+
 .audio-player {
     background: rgba(255, 255, 255, 0.8);
     padding: 15px;
