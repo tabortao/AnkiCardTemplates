@@ -227,13 +227,21 @@ html, body {
 
 .audio-container {
     margin-top: 15px;
+    /* 让多个音频并排显示 */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
 }
 
-/* 音频字段直接样式 */
+/* 音频字段直接样式 - 优化多音频显示 */
 .audio-container audio {
-    width: 100%;
+    flex: 1;
+    min-width: 200px; /* 最小宽度确保音频控件可用 */
+    max-width: 300px; /* 最大宽度避免过宽 */
     background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
+    margin: 5px 0; /* 垂直间距 */
 }
 
 /* 如果没有音频内容的样式 */
@@ -248,15 +256,16 @@ html, body {
     border-radius: 10px;
     color: #666;
     font-style: italic;
+    width: 100%;
 }
 
-/* 图片区域样式 */
+/* 图片区域样式 - 使用紫色主题与句子区域区分 */
 .image-section {
     margin: 20px 0;
     padding: 20px;
-    background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+    background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%); /* 紫色渐变背景 */
     border-radius: 15px;
-    border-left: 5px solid #4CAF50;
+    border-left: 5px solid #9C27B0; /* 紫色边框 */
 }
 
 .image-section .image-container {
@@ -436,33 +445,41 @@ html, body {
     border-radius: 10px;
 }
 
-/* 鼓励区域样式 */
+/* 鼓励区域样式 - 紧凑优化版 */
 .encouragement {
     text-align: center;
-    margin: 25px 0;
-    padding: 20px;
+    margin: 15px 0; /* 减少外边距 */
+    padding: 12px 15px; /* 减少内边距 */
     background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
-    border-radius: 15px;
+    border-radius: 12px; /* 稍微减少圆角 */
     border: 2px solid #FF9800;
+    display: flex; /* 使用flex布局更紧凑 */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* 元素间距 */
+    min-height: 60px; /* 设置最小高度 */
 }
 
 .trophy-icon {
-    font-size: 36px;
-    margin-bottom: 10px;
+    font-size: 24px; /* 减小图标尺寸 */
+    margin: 0; /* 移除边距 */
     animation: rotate 2s linear infinite;
+    flex-shrink: 0; /* 防止图标被压缩 */
 }
 
 .encourage-text {
-    font-size: 16px;
+    font-size: 14px; /* 稍微减小字体 */
     font-weight: bold;
     color: #E65100;
-    margin: 5px 0;
+    margin: 0; /* 移除边距 */
+    line-height: 1.2; /* 紧凑行高 */
 }
 
 .encourage-text-chinese {
-    font-size: 14px;
+    font-size: 12px; /* 减小中文字体 */
     color: #F57C00;
-    margin: 5px 0;
+    margin: 0; /* 移除边距 */
+    line-height: 1.2; /* 紧凑行高 */
 }
 
 /* 浮动装饰元素 */
