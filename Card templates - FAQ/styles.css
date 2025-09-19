@@ -87,6 +87,7 @@ html, body {
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     animation: float 3s ease-in-out infinite;
+    text-align: center;
 }
 
 /* 主图片样式 */
@@ -271,8 +272,10 @@ html, body {
 .image-section .image-container {
     margin: 12px 0 0 0; /* 减少顶部边距 */
     display: flex;
+    flex-direction: column; /* 改为纵向排列以支持图片下方文字 */
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .image-section .image-container img {
@@ -285,6 +288,7 @@ html, body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     object-fit: contain;
     background: #f8f9fa;
+    margin-bottom: 10px; /* 添加底部间距，与文字分开 */
 }
 
 .image-section .image-container img:hover {
@@ -292,6 +296,15 @@ html, body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* 添加图片区域文字样式 */
+.image-section .image-container p {
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+    width: 100%;
+}
 /* 如果没有图片内容的样式 */
 .image-section .image-container:empty::after {
     content: "🖼️ 暂无图片内容";
