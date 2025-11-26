@@ -1,0 +1,62 @@
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+/>
+<div class="card hanzi-card">
+  <div class="answer-header">
+    <div class="success-icon">🎉</div>
+    <h2 class="answer-title">学习内容</h2>
+  </div>
+
+  <hr id="answer" />
+
+  <!-- <div class="frontside-section">
+    {{FrontSide}}
+  </div> -->
+
+  <div class="audio-section">
+    <div class="section-header">
+      <span class="section-icon">🔊</span>
+      <h3>汉字发音</h3>
+    </div>
+    <div class="audio-container">
+      <audio
+        controls
+        autoplay
+        src="https://hanyu-word-pinyin-short.cdn.bcebos.com/{{音节}}{{声调}}.mp3"
+      ></audio>
+    </div>
+    <div class="tone-chips">
+      <span class="chip">音节：{{音节}}</span>
+      <span class="chip">声调：{{声调}}</span>
+    </div>
+  </div>
+
+  <div class="pinyin-section">
+    <div class="section-header">
+      <span class="section-icon">🗣️</span>
+      <h3>拼音</h3>
+    </div>
+    <div class="pinyin-content">{{拼音}}</div>
+  </div>
+
+  <div class="remark-section">
+    <div class="section-header">
+      <span class="section-icon">💡</span>
+      <h3>备注</h3>
+    </div>
+    <div class="remark-content">{{备注}}</div>
+  </div>
+
+  <div class="encouragement">
+    <div class="trophy-icon">🏆</div>
+    <p class="encourage-text">太棒了！继续练习汉字！</p>
+    <p class="encourage-text-chinese">坚持每天认读，进步看得见！</p>
+  </div>
+
+  <div class="decoration-stars">
+    <div class="star star-1">⭐</div>
+    <div class="star star-2">✨</div>
+    <div class="star star-3">🌟</div>
+  </div>
+</div>
