@@ -39,8 +39,8 @@
         <div class="card gushi-card gushi-front">
           <div class="title-section"><div class="title-icon">🚀</div><h2 class="card-title">静夜思</h2></div>
           <div id="previewPoemMask" class="poem-mask" style="display:none"></div>
-          <div class="action-section"><button class="action-button" id="previewPlayAudio">朗读</button><button class="action-button" id="previewShowMask">开始挑战</button></div>
-          <div id="previewPoemData" data-text="床前明月光\n疑是地上霜\n举头望明月\n低头思故乡" data-seed="1" style="display:none"></div>
+          <div class="action-section"><button class="action-button" id="previewPlayAudio">朗读</button><button class="action-button" id="previewShowMask">挑战</button></div>
+          <div id="previewPoemData" data-seed="1" style="display:none">床前明月光<br>疑是地上霜<br>举头望明月<br>低头思故乡</div>
           <div class="decoration-elements"><div class="floating-emoji emoji-1">⚡</div><div class="floating-emoji emoji-2">🎯</div><div class="floating-emoji emoji-3">🏁</div></div>
         </div>
       </div>
@@ -94,7 +94,7 @@
   <script>
     (function(){
       var d=document.getElementById('previewPoemData');
-      var text=d.getAttribute('data-text');
+      var raw=d.innerHTML||'';
       var seedStr=d.getAttribute('data-seed');
       var seed=0; for(var i=0;i<seedStr.length;i++){seed=(seed*131+seedStr.charCodeAt(i))>>>0}
       function rng(){seed=(seed*1664525+1013904223)>>>0; return (seed&0xffff)/65536}
@@ -103,21 +103,22 @@
       var playBtn=document.getElementById('previewPlayAudio');
       var playAudioBtn=document.getElementById('previewPlayPoemAudio');
       function buildMasked(){
-        var lines=(text||'').split(/\r?\n/);
+        var lines=(raw.replace(/<br[^>]*>/gi,'\n')).split(/\r?\n/);
         var frag=document.createDocumentFragment();
         for(var li=0;li<lines.length;li++){
           var line=lines[li];
           var hanIdx=[];
           for(var i=0;i<line.length;i++){ if(/[\u4e00-\u9fff]/.test(line[i])) hanIdx.push(i); }
           var showSet={};
-          if(hanIdx.length>0){ var first=hanIdx[0]; var last=hanIdx[hanIdx.length-1]; var mid=hanIdx[Math.floor((hanIdx.length-1)/2)]; showSet[first]=true; showSet[mid]=true; showSet[last]=true; }
+          if(hanIdx.length>0){ var first=hanIdx[0]; var last=hanIdx[hanIdx.length-1]; showSet[first]=true; showSet[last]=true; }
+          var lineDiv=document.createElement('div'); lineDiv.className='poem-line';
           for(var i2=0;i2<line.length;i2++){
             var ch=line[i2];
             var isHan=/[\u4e00-\u9fff]/.test(ch);
-            if(isHan && !showSet[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; frag.appendChild(m); }
-            else { var s=document.createElement('span'); s.className='poem-char'; s.textContent=ch; frag.appendChild(s); }
+            if(isHan && !showSet[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; lineDiv.appendChild(m); }
+            else { var s=document.createElement('span'); s.className='poem-char'; s.textContent=ch; lineDiv.appendChild(s); }
           }
-          if(li<lines.length-1){ frag.appendChild(document.createElement('br')); }
+          frag.appendChild(lineDiv);
         }
         container.innerHTML='';
         container.appendChild(frag);
@@ -128,8 +129,8 @@
         btn.textContent='再试一次';
         seed^=Date.now()&0xffff;
       });
-      function speak(){ var t=(text||'').replace(/\r?\n/g,'，'); if(window.speechSynthesis){ var u=new SpeechSynthesisUtterance(t); var vs=window.speechSynthesis.getVoices(); var v=null; for(var i=0;i<vs.length;i++){ if((vs[i].lang||'').toLowerCase().indexOf('zh')===0){ v=vs[i]; break; } } if(v) u.voice=v; u.lang='zh-CN'; u.rate=0.95; u.pitch=1.0; window.speechSynthesis.speak(u); } }
-      playBtn&&playBtn.addEventListener('click',speak);
+      function speak(){ var t=(raw||'').replace(/<br[^>]*>/gi,'，').replace(/<[^>]*>/g,''); if(window.speechSynthesis){ var u=new SpeechSynthesisUtterance(t); var vs=window.speechSynthesis.getVoices(); var v=null; for(var i=0;i<vs.length;i++){ if((vs[i].lang||'').toLowerCase().indexOf('zh')===0){ v=vs[i]; break; } } if(v) u.voice=v; u.lang='zh-CN'; u.rate=0.95; u.pitch=1.0; window.speechSynthesis.speak(u); } }
+      playBtn&&playBtn.addEventListener('click', function(){ speak(); buildMasked(); container.style.display='block'; });
       playAudioBtn&&playAudioBtn.addEventListener('click', function(){ var a=document.querySelector('.audio-section audio'); if(a){ try{ a.play(); }catch(e){} } });
     })();
   </script>
