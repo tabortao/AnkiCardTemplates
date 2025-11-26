@@ -1,0 +1,60 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<div class="card gushi-card">
+  <div class="title-section">
+    <div class="title-icon">🚀</div>
+    <h2 class="card-title">{{诗名}}</h2>
+  </div>
+
+  <div class="action-section">
+    <button class="action-button" id="showMaskBtn">开始挑战</button>
+  </div>
+
+  <div id="poemMask" class="poem-mask" style="display:none"></div>
+  <div id="poemData" data-text="{{古诗内容}}" data-seed="{{序号}}" style="display:none"></div>
+
+  <div class="decoration-elements">
+    <div class="floating-emoji emoji-1">⚡</div>
+    <div class="floating-emoji emoji-2">🎯</div>
+    <div class="floating-emoji emoji-3">🏁</div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var d=document.getElementById('poemData');
+    if(!d) return;
+    var text=d.getAttribute('data-text')||'';
+    var seedStr=d.getAttribute('data-seed')||'';
+    var seed=0; for(var i=0;i<seedStr.length;i++){seed=(seed*131+seedStr.charCodeAt(i))>>>0}
+    function rng(){seed=(seed*1664525+1013904223)>>>0; return (seed&0xffff)/65536}
+    var container=document.getElementById('poemMask');
+    var btn=document.getElementById('showMaskBtn');
+    function buildMasked(){
+      var frag=document.createDocumentFragment();
+      for(var i=0;i<text.length;i++){
+        var ch=text[i];
+        if(ch==='\n'){frag.appendChild(document.createElement('br'));continue}
+        var isHan=/[\u4e00-\u9fff]/.test(ch);
+        var span=document.createElement('span');
+        span.className='poem-char';
+        if(isHan && rng()<0.18){
+          var m=document.createElement('span');
+          m.className='masked-char';
+          m.textContent=ch;
+          frag.appendChild(m);
+        }else{
+          span.textContent=ch;
+          frag.appendChild(span);
+        }
+      }
+      container.innerHTML='';
+      container.appendChild(frag);
+    }
+    btn&&btn.addEventListener('click',function(){
+      buildMasked();
+      container.style.display='block';
+      btn.textContent='再试一次';
+      seed^=Date.now()&0xffff;
+    });
+  })();
+</script>
