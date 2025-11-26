@@ -1,15 +1,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<div class="card gushi-card">
+<div class="card gushi-card gushi-front">
   <div class="title-section">
     <div class="title-icon">🚀</div>
     <h2 class="card-title">{{诗名}}</h2>
   </div>
 
+  <div id="poemMask" class="poem-mask" style="display:none"></div>
+
   <div class="action-section">
+    <button class="action-button" id="playAudioBtn">朗读</button>
     <button class="action-button" id="showMaskBtn">开始挑战</button>
   </div>
 
-  <div id="poemMask" class="poem-mask" style="display:none"></div>
   <div id="poemData" data-text="{{古诗内容}}" data-seed="{{序号}}" style="display:none"></div>
 
   <div class="decoration-elements">
@@ -17,7 +19,7 @@
     <div class="floating-emoji emoji-2">🎯</div>
     <div class="floating-emoji emoji-3">🏁</div>
   </div>
-</div>
+  </div>
 
 <script>
   (function(){
@@ -29,23 +31,24 @@
     function rng(){seed=(seed*1664525+1013904223)>>>0; return (seed&0xffff)/65536}
     var container=document.getElementById('poemMask');
     var btn=document.getElementById('showMaskBtn');
+    var playBtn=document.getElementById('playAudioBtn');
     function buildMasked(){
+      var lines=(text||'').split(/\r?\n/);
       var frag=document.createDocumentFragment();
-      for(var i=0;i<text.length;i++){
-        var ch=text[i];
-        if(ch==='\n'){frag.appendChild(document.createElement('br'));continue}
-        var isHan=/[\u4e00-\u9fff]/.test(ch);
-        var span=document.createElement('span');
-        span.className='poem-char';
-        if(isHan && rng()<0.18){
-          var m=document.createElement('span');
-          m.className='masked-char';
-          m.textContent=ch;
-          frag.appendChild(m);
-        }else{
-          span.textContent=ch;
-          frag.appendChild(span);
+      for(var li=0;li<lines.length;li++){
+        var line=lines[li];
+        var hanIdx=[];
+        for(var i=0;i<line.length;i++){ if(/[\u4e00-\u9fff]/.test(line[i])) hanIdx.push(i); }
+        var need=Math.min(hanIdx.length, Math.max(2, Math.floor(hanIdx.length*0.3)));
+        var pick={};
+        for(var k=0;k<need;k++){ var t=Math.floor(rng()*hanIdx.length); pick[hanIdx[t]]=true; }
+        for(var i2=0;i2<line.length;i2++){
+          var ch=line[i2];
+          var isHan=/[\u4e00-\u9fff]/.test(ch);
+          if(isHan && pick[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; frag.appendChild(m); }
+          else { var s=document.createElement('span'); s.className='poem-char'; s.textContent=ch; frag.appendChild(s); }
         }
+        if(li<lines.length-1){ frag.appendChild(document.createElement('br')); }
       }
       container.innerHTML='';
       container.appendChild(frag);
@@ -56,5 +59,10 @@
       btn.textContent='再试一次';
       seed^=Date.now()&0xffff;
     });
+    function speak(){
+      var t=(text||'').replace(/\r?\n/g,'，');
+      if(window.speechSynthesis){ var u=new SpeechSynthesisUtterance(t); var vs=window.speechSynthesis.getVoices(); var v=null; for(var i=0;i<vs.length;i++){ if((vs[i].lang||'').toLowerCase().indexOf('zh')===0){ v=vs[i]; break; } } if(v) u.voice=v; u.lang='zh-CN'; u.rate=0.95; u.pitch=1.0; window.speechSynthesis.speak(u); }
+    }
+    playBtn&&playBtn.addEventListener('click',speak);
   })();
 </script>
