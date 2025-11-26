@@ -52,7 +52,7 @@
           <hr id="answer">
           <div class="meta-line">唐·李白</div>
           <div class="index-chip">序号：1</div>
-          <div class="audio-section"><div class="section-header"><span class="section-icon">🔊</span><h3>古诗音频</h3></div><div class="audio-container"><audio></audio></div></div>
+          <div class="audio-section"><div class="section-header"><span class="section-icon">🔊</span><h3>古诗音频</h3></div><div class="audio-container"><audio></audio></div><div class="audio-controls"><button class="action-button small" id="previewPlayPoemAudio">播放</button></div></div>
           <div class="poem-section"><div class="section-header"><span class="section-icon">📜</span><h3>古诗内容</h3></div><div class="poem-content">床前明月光\n疑是地上霜\n举头望明月\n低头思故乡</div></div>
           <div class="explain-section"><div class="section-header"><span class="section-icon">🧠</span><h3>古诗解读</h3></div><div class="explain-content">描写月夜独处时的思乡之情，借景抒情。</div></div>
           <div class="background-section"><div class="section-header"><span class="section-icon">🏯</span><h3>创作背景</h3></div><div class="background-content">李白旅居各地时所作，反映游子思乡的普遍心理。</div></div>
@@ -101,6 +101,7 @@
       var container=document.getElementById('previewPoemMask');
       var btn=document.getElementById('previewShowMask');
       var playBtn=document.getElementById('previewPlayAudio');
+      var playAudioBtn=document.getElementById('previewPlayPoemAudio');
       function buildMasked(){
         var lines=(text||'').split(/\r?\n/);
         var frag=document.createDocumentFragment();
@@ -108,13 +109,12 @@
           var line=lines[li];
           var hanIdx=[];
           for(var i=0;i<line.length;i++){ if(/[\u4e00-\u9fff]/.test(line[i])) hanIdx.push(i); }
-          var need=Math.min(hanIdx.length, Math.max(2, Math.floor(hanIdx.length*0.3)));
-          var pick={};
-          for(var k=0;k<need;k++){ var t=Math.floor(rng()*hanIdx.length); pick[hanIdx[t]]=true; }
+          var showSet={};
+          if(hanIdx.length>0){ var first=hanIdx[0]; var last=hanIdx[hanIdx.length-1]; var mid=hanIdx[Math.floor((hanIdx.length-1)/2)]; showSet[first]=true; showSet[mid]=true; showSet[last]=true; }
           for(var i2=0;i2<line.length;i2++){
             var ch=line[i2];
             var isHan=/[\u4e00-\u9fff]/.test(ch);
-            if(isHan && pick[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; frag.appendChild(m); }
+            if(isHan && !showSet[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; frag.appendChild(m); }
             else { var s=document.createElement('span'); s.className='poem-char'; s.textContent=ch; frag.appendChild(s); }
           }
           if(li<lines.length-1){ frag.appendChild(document.createElement('br')); }
@@ -130,6 +130,7 @@
       });
       function speak(){ var t=(text||'').replace(/\r?\n/g,'，'); if(window.speechSynthesis){ var u=new SpeechSynthesisUtterance(t); var vs=window.speechSynthesis.getVoices(); var v=null; for(var i=0;i<vs.length;i++){ if((vs[i].lang||'').toLowerCase().indexOf('zh')===0){ v=vs[i]; break; } } if(v) u.voice=v; u.lang='zh-CN'; u.rate=0.95; u.pitch=1.0; window.speechSynthesis.speak(u); } }
       playBtn&&playBtn.addEventListener('click',speak);
+      playAudioBtn&&playAudioBtn.addEventListener('click', function(){ var a=document.querySelector('.audio-section audio'); if(a){ try{ a.play(); }catch(e){} } });
     })();
   </script>
 </body>

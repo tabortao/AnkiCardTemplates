@@ -39,13 +39,17 @@
         var line=lines[li];
         var hanIdx=[];
         for(var i=0;i<line.length;i++){ if(/[\u4e00-\u9fff]/.test(line[i])) hanIdx.push(i); }
-        var need=Math.min(hanIdx.length, Math.max(2, Math.floor(hanIdx.length*0.3)));
-        var pick={};
-        for(var k=0;k<need;k++){ var t=Math.floor(rng()*hanIdx.length); pick[hanIdx[t]]=true; }
+        var showSet={};
+        if(hanIdx.length>0){
+          var first=hanIdx[0];
+          var last=hanIdx[hanIdx.length-1];
+          var mid=hanIdx[Math.floor((hanIdx.length-1)/2)];
+          showSet[first]=true; showSet[mid]=true; showSet[last]=true;
+        }
         for(var i2=0;i2<line.length;i2++){
           var ch=line[i2];
           var isHan=/[\u4e00-\u9fff]/.test(ch);
-          if(isHan && pick[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; frag.appendChild(m); }
+          if(isHan && !showSet[i2]){ var m=document.createElement('span'); m.className='masked-char'; m.textContent=ch; frag.appendChild(m); }
           else { var s=document.createElement('span'); s.className='poem-char'; s.textContent=ch; frag.appendChild(s); }
         }
         if(li<lines.length-1){ frag.appendChild(document.createElement('br')); }

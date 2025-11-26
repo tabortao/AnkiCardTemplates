@@ -4,6 +4,7 @@ html, body { margin:0; padding:0; width:100%; height:100%; box-sizing:border-box
 .card{ font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif; max-width:720px; width:100%; margin:0 auto; padding:20px; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.15); position:relative; overflow:hidden; margin-top:10px; margin-bottom:10px; max-height:calc(100vh - 20px); overflow-y:auto; }
 .gushi-card{ background:linear-gradient(135deg,#2196F3 0%, #00BCD4 100%); color:#13334c; }
 .gushi-front{ display:flex; flex-direction:column; min-height:calc(100vh - 20px); max-width:100%; width:100%; margin:0 !important; border-radius:0; box-shadow:none; }
+.gushi-front{ overflow-y:hidden; }
 .title-section{ text-align:center; margin-bottom:24px; }
 .title-icon{ font-size:56px; margin-bottom:10px; animation:bounce 2s infinite; }
 .card-title{ font-size:32px; font-weight:800; color:#fff; text-shadow:2px 2px 4px rgba(0,0,0,0.3); margin:0; letter-spacing:1px; }
@@ -11,7 +12,7 @@ html, body { margin:0; padding:0; width:100%; height:100%; box-sizing:border-box
 .gushi-front .action-section{ margin-top:auto; }
 .action-button{ background:#ff7043; color:#fff; border:none; border-radius:999px; padding:10px 18px; font-size:16px; font-weight:700; box-shadow:0 6px 16px rgba(0,0,0,0.2); cursor:pointer; transition:transform .2s ease, box-shadow .2s ease; }
 .action-button:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.25); }
-.poem-mask{ margin-top:12px; background:rgba(255,255,255,0.95); border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.12); line-height:1.8; font-size:22px; text-align:center; white-space:pre-wrap; }
+.poem-mask{ margin-top:12px; background:rgba(255,255,255,0.95); border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.12); line-height:1.8; font-size:22px; text-align:center; white-space:pre-wrap; max-height:calc(100vh - 220px); overflow-y:auto; }
 .poem-audio{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 .poem-char{ display:inline-block; padding:0 1px; }
 .masked-char{ display:inline-block; color:transparent; border-bottom:3px solid #1976d2; width:auto; padding:0 1px; }
@@ -31,6 +32,8 @@ html, body { margin:0; padding:0; width:100%; height:100%; box-sizing:border-box
 .audio-section{ margin:16px 0; padding:16px; border-radius:16px; background:rgba(255,255,255,0.92); }
 .poem-content{ white-space:pre-wrap; text-align:center; font-size:22px; line-height:1.8; color:#0d47a1; }
 .audio-container audio{ width:100%; max-width:320px; height:32px; border-radius:8px; background:rgba(255,255,255,0.8); }
+.audio-controls{ display:flex; justify-content:center; margin-top:10px; }
+.action-button.small{ padding:8px 14px; font-size:14px; }
 .explain-content,.background-content,.author-content{ white-space:pre-wrap; font-size:14px; line-height:1.7; color:#134e6f; }
 .encouragement{ text-align:center; margin:18px 0; padding:12px 14px; background:linear-gradient(135deg,#FFF3E0 0%, #FFE0B2 100%); border-radius:12px; border:2px solid #FF9800; display:flex; align-items:center; justify-content:center; gap:10px; }
 .trophy-icon{ font-size:28px; animation:rotate 2s linear infinite; }

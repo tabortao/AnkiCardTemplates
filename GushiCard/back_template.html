@@ -19,6 +19,7 @@
       <h3>古诗音频</h3>
     </div>
     <div class="audio-container">{{古诗音频}}</div>
+    <div class="audio-controls"><button class="action-button small" id="playPoemAudioBtn">播放</button></div>
   </div>
 
   <div class="poem-section">
@@ -65,3 +66,16 @@
     <div class="star star-3">🌟</div>
   </div>
 </div>
+<script>
+(function(){
+  var btn=document.getElementById('playPoemAudioBtn');
+  if(btn){
+    btn.addEventListener('click', function(){
+      var a=document.querySelector('.audio-section audio') || document.querySelector('.audio-container audio');
+      if(a){ try{ a.play(); return; }catch(e){} }
+      var clickable=document.querySelector('.audio-section [onclick], .audio-section a, .audio-section button');
+      if(clickable && clickable!==btn){ try{ clickable.click(); }catch(e){} }
+    });
+  }
+})();
+</script>
