@@ -20,18 +20,49 @@ html, body {
     max-width: 580px;
     width: 92%;
     margin: 24px auto;
-    padding: 28px 24px;
+    padding: 32px 24px 28px 24px;
     background-color: #ffffff;
     border: 1px solid #dce4df;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(46, 56, 50, 0.05);
+    position: relative; /* 为右上角按钮定位 */
+}
+
+/* 右上角图片显隐切换按钮 */
+.img-toggle-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #edf2ee;
+    border: 1px solid #d3dfd7;
+    color: #5c6c62;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.img-toggle-btn:hover {
+    background: #e2ebe4;
+    color: #3b5747;
+}
+
+.img-toggle-btn.active {
+    background: #e0ece4;
+    color: #3b5747;
+    border-color: #bad3c3;
 }
 
 /* 单词居中容器 */
 .word-container {
     display: flex;
     align-items: center;
-    justify-content: center; /* 居中 */
+    justify-content: center;
     gap: 12px;
     margin-bottom: 8px;
     text-align: center;
@@ -40,7 +71,7 @@ html, body {
 .word-text.en-main {
     font-size: 28px;
     font-weight: 600;
-    color: #3b5747; /* 豆沙深绿 */
+    color: #3b5747;
     letter-spacing: 0.3px;
     line-height: 1.2;
 }
@@ -49,7 +80,7 @@ html, body {
 .meaning-container {
     display: flex;
     align-items: center;
-    justify-content: center; /* 居中 */
+    justify-content: center;
     gap: 8px;
     margin-bottom: 16px;
     text-align: center;
@@ -88,7 +119,7 @@ html, body {
     height: 26px;
 }
 
-/* 状态动画 */
+/* 播放中状态 */
 .tts-btn.loading {
     opacity: 0.5;
     cursor: wait;
@@ -107,11 +138,22 @@ html, body {
     100% { transform: scale(1); }
 }
 
-/* 图片区域 */
+/* 图片区域与折叠动画 */
 .image-wrapper {
     margin: 16px 0;
     display: flex;
     justify-content: center;
+    transition: all 0.3s ease-in-out;
+    opacity: 1;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.image-wrapper.is-hidden {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    pointer-events: none;
 }
 
 .image-wrapper img {
@@ -130,7 +172,7 @@ html, body {
     margin: 20px 0 16px 0;
 }
 
-/* 例句模块（保持左对齐便于阅读长句） */
+/* 例句模块（左对齐） */
 .sentence-block {
     background-color: #f7faf8;
     border-left: 3px solid #789984;
@@ -166,14 +208,21 @@ html, body {
     padding-top: 6px;
 }
 
-/* 移动端与 AnkiDroid 适配 */
+/* 移动端适配 */
 @media (max-width: 480px) {
     .card.sage-theme {
         width: 100% !important;
         margin: 0 !important;
-        padding: 18px 14px !important;
+        padding: 24px 14px 18px 14px !important;
         border-radius: 0;
         box-shadow: none;
+    }
+
+    .img-toggle-btn {
+        top: 8px;
+        right: 8px;
+        font-size: 10px;
+        padding: 3px 6px;
     }
 
     .word-text.en-main {

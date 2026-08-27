@@ -1,6 +1,16 @@
 <!-- AICard_英语单词 - 正面模板 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <div class="card sage-theme">
+    <!-- 右上角图片显隐切换按钮（仅在有图片时显示） -->
+    {{#图片}}
+    <button id="toggle-img-btn" class="img-toggle-btn" title="点击显示/隐藏图片" onclick="event.stopPropagation(); toggleImageManual()">
+        <svg class="eye-icon" viewBox="0 0 24 24" width="14" height="14">
+            <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+        <span id="img-toggle-text">显示图片 (5s)</span>
+    </button>
+    {{/图片}}
+
     <!-- 英语单词（居中） -->
     <div class="word-container">
         <span class="word-text en-main">{{英语}}</span>
@@ -11,15 +21,16 @@
         </button>
     </div>
 
-    <!-- 图片区域 -->
+    <!-- 图片区域（默认隐藏） -->
     {{#图片}}
-    <div class="image-wrapper">
+    <div id="image-wrapper" class="image-wrapper is-hidden">
         {{图片}}
     </div>
     {{/图片}}
 </div>
 
 <script>
+// 1. TTS 播放逻辑
 async function playTTS(btn, text, voice) {
     if (!text || text.trim() === "") return;
     if (btn && (btn.classList.contains('loading') || btn.classList.contains('playing'))) return;
@@ -68,5 +79,63 @@ async function playTTS(btn, text, voice) {
             btn.classList.remove('playing');
         }
     }
+}
+
+// 2. 图片显隐与 5 秒倒计时逻辑
+let autoRevealTimer = null;
+let countdownInterval = null;
+let secondsLeft = 5;
+
+function showImage() {
+    const imgBox = document.getElementById('image-wrapper');
+    const btnText = document.getElementById('img-toggle-text');
+    const btn = document.getElementById('toggle-img-btn');
+    if (imgBox) imgBox.classList.remove('is-hidden');
+    if (btnText) btnText.innerText = '隐藏图片';
+    if (btn) btn.classList.add('active');
+    
+    clearInterval(countdownInterval);
+    clearTimeout(autoRevealTimer);
+}
+
+function hideImage() {
+    const imgBox = document.getElementById('image-wrapper');
+    const btnText = document.getElementById('img-toggle-text');
+    const btn = document.getElementById('toggle-img-btn');
+    if (imgBox) imgBox.classList.add('is-hidden');
+    if (btnText) btnText.innerText = '显示图片';
+    if (btn) btn.classList.remove('active');
+    
+    clearInterval(countdownInterval);
+    clearTimeout(autoRevealTimer);
+}
+
+function toggleImageManual() {
+    const imgBox = document.getElementById('image-wrapper');
+    if (!imgBox) return;
+    if (imgBox.classList.contains('is-hidden')) {
+        showImage();
+    } else {
+        hideImage();
+    }
+}
+
+// 启动 5 秒自动显示机制
+const imgContainer = document.getElementById('image-wrapper');
+if (imgContainer) {
+    countdownInterval = setInterval(() => {
+        secondsLeft--;
+        const btnText = document.getElementById('img-toggle-text');
+        const imgBox = document.getElementById('image-wrapper');
+        if (btnText && imgBox && imgBox.classList.contains('is-hidden')) {
+            if (secondsLeft > 0) {
+                btnText.innerText = `显示图片 (${secondsLeft}s)`;
+            }
+        }
+    }, 1000);
+
+    autoRevealTimer = setTimeout(() => {
+        showImage();
+    }, 5000);
 }
 </script>

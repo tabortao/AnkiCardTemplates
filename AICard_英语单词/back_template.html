@@ -21,7 +21,7 @@
         </button>
     </div>
 
-    <!-- 图片区域 -->
+    <!-- 图片区域（背面正常显示） -->
     {{#图片}}
     <div class="image-wrapper">
         {{图片}}
@@ -58,7 +58,6 @@
 </div>
 
 <script>
-// 单项 TTS 播放函数
 async function playTTS(btn, text, voice) {
     if (!text || text.trim() === "") return;
     if (btn && (btn.classList.contains('loading') || btn.classList.contains('playing'))) return;
@@ -109,7 +108,7 @@ async function playTTS(btn, text, voice) {
     }
 }
 
-// 背面自动连播序列：英语 -> 汉语 -> 英语例句
+// 背面自动连播：英语 -> 汉语 -> 英语例句
 async function autoPlayBackSequence() {
     const enWord = `{{英语}}`.trim();
     const zhWord = `{{汉语}}`.trim();
@@ -119,24 +118,18 @@ async function autoPlayBackSequence() {
     const zhBtn = document.getElementById('btn-zh-word');
     const sentBtn = document.getElementById('btn-en-sentence');
 
-    // 1. 播放英语单词
     if (enWord) {
         await playTTS(enBtn, enWord, 'en-US-AriaNeural');
-        await new Promise(r => setTimeout(r, 260)); // 短暂间歇
+        await new Promise(r => setTimeout(r, 260));
     }
-
-    // 2. 播放中文释义
     if (zhWord) {
         await playTTS(zhBtn, zhWord, 'zh-CN-XiaoxiaoNeural');
         await new Promise(r => setTimeout(r, 260));
     }
-
-    // 3. 播放英文例句
     if (enSentence) {
         await playTTS(sentBtn, enSentence, 'en-US-AriaNeural');
     }
 }
 
-// 进入背面后启动自动播放
 setTimeout(autoPlayBackSequence, 150);
 </script>
