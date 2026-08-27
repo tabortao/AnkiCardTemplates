@@ -1,9 +1,9 @@
-<!-- AICard_英语单词 - 正面模板 -->
+<!-- AICard_英语单词 - 正面模板 (老客户端高兼容版) -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <div class="card sage-theme">
     <!-- 右上角图片显隐切换按钮 -->
     {{#图片}}
-    <button id="toggle-img-btn" class="img-toggle-btn" title="点击显示/隐藏图片" onclick="event.stopPropagation(); toggleImageManual()">
+    <button id="toggle-img-btn" class="img-toggle-btn" type="button" onclick="toggleFrontImage(event)">
         <svg class="eye-icon" viewBox="0 0 24 24" width="14" height="14">
             <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
         </svg>
@@ -14,30 +14,32 @@
     <!-- 英语单词（大字号 + 加粗居中） -->
     <div class="word-container">
         <span class="word-text en-main">{{英语}}</span>
-        <button class="tts-btn" title="朗读" onclick="event.stopPropagation(); playTTS(this, '{{英语}}', 'en-US-AriaNeural')">
+        <button class="tts-btn" type="button" title="朗读" onclick="playVoiceCraftTTS(this, '{{英语}}', 'en-US-AriaNeural', event)">
             <svg class="speaker-icon" viewBox="0 0 24 24" width="22" height="22">
                 <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
             </svg>
         </button>
     </div>
 
-    <!-- 图片区域（默认隐藏，5秒自动展开） -->
+    <!-- 图片区域：默认直接通过 inline 样式隐藏，确保老浏览器 100% 兼容 -->
     {{#图片}}
-    <div id="image-wrapper" class="image-wrapper is-hidden">
+    <div id="front-image-wrapper" class="image-wrapper" style="display: none;">
         {{图片}}
     </div>
     {{/图片}}
 </div>
 
 <script>
-async function playTTS(btn, text, voice) {
-    if (!text || text.trim() === "") return;
-    if (btn && (btn.classList.contains('loading') || btn.classList.contains('playing'))) return;
+(function() {
+    // 1. TTS 核心函数挂载
+    window.playVoiceCraftTTS = function(btn, text, voice, e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        if (!text || text.trim() === "") return;
+        if (btn && (btn.classList.contains('loading') || btn.classList.contains('playing'))) return;
 
-    if (btn) btn.classList.add('loading');
+        if (btn) btn.classList.add('loading');
 
-    try {
-        const response = await fetch('https://tts.wangwangit.com/v1/audio/speech', {
+        fetch('https://tts.wangwangit.com/v1/audio/speech', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -47,92 +49,93 @@ async function playTTS(btn, text, voice) {
                 pitch: "0",
                 style: "general"
             })
-        });
+        })
+        .then(function(res) {
+            if (!res.ok) throw new Error('TTS 请求失败');
+            return res.blob();
+        })
+        .then(function(blob) {
+            var audioUrl = URL.createObjectURL(blob);
+            var audio = new Audio(audioUrl);
 
-        if (!response.ok) throw new Error('TTS 请求失败');
+            if (btn) {
+                btn.classList.remove('loading');
+                btn.classList.add('playing');
+            }
 
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-
-        if (btn) {
-            btn.classList.remove('loading');
-            btn.classList.add('playing');
-        }
-
-        return new Promise((resolve) => {
-            audio.onended = () => {
+            audio.onended = function() {
                 if (btn) btn.classList.remove('playing');
-                resolve();
             };
-            audio.onerror = () => {
+            audio.onerror = function() {
                 if (btn) btn.classList.remove('playing');
-                resolve();
             };
             audio.play();
-        });
-    } catch (err) {
-        console.error(err);
-        if (btn) {
-            btn.classList.remove('loading');
-            btn.classList.remove('playing');
-        }
-    }
-}
-
-let autoRevealTimer = null;
-let countdownInterval = null;
-let secondsLeft = 5;
-
-function showImage() {
-    const imgBox = document.getElementById('image-wrapper');
-    const btnText = document.getElementById('img-toggle-text');
-    const btn = document.getElementById('toggle-img-btn');
-    if (imgBox) imgBox.classList.remove('is-hidden');
-    if (btnText) btnText.innerText = '隐藏图片';
-    if (btn) btn.classList.add('active');
-    
-    clearInterval(countdownInterval);
-    clearTimeout(autoRevealTimer);
-}
-
-function hideImage() {
-    const imgBox = document.getElementById('image-wrapper');
-    const btnText = document.getElementById('img-toggle-text');
-    const btn = document.getElementById('toggle-img-btn');
-    if (imgBox) imgBox.classList.add('is-hidden');
-    if (btnText) btnText.innerText = '显示图片';
-    if (btn) btn.classList.remove('active');
-    
-    clearInterval(countdownInterval);
-    clearTimeout(autoRevealTimer);
-}
-
-function toggleImageManual() {
-    const imgBox = document.getElementById('image-wrapper');
-    if (!imgBox) return;
-    if (imgBox.classList.contains('is-hidden')) {
-        showImage();
-    } else {
-        hideImage();
-    }
-}
-
-const imgContainer = document.getElementById('image-wrapper');
-if (imgContainer) {
-    countdownInterval = setInterval(() => {
-        secondsLeft--;
-        const btnText = document.getElementById('img-toggle-text');
-        const imgBox = document.getElementById('image-wrapper');
-        if (btnText && imgBox && imgBox.classList.contains('is-hidden')) {
-            if (secondsLeft > 0) {
-                btnText.innerText = `显示图片 (${secondsLeft}s)`;
+        })
+        .catch(function(err) {
+            console.error(err);
+            if (btn) {
+                btn.classList.remove('loading');
+                btn.classList.remove('playing');
             }
-        }
-    }, 1000);
+        });
+    };
 
-    autoRevealTimer = setTimeout(() => {
-        showImage();
-    }, 5000);
-}
+    // 2. 清理旧定时器，防止切卡后计时错乱
+    if (window._ankiFrontImgTimer) clearTimeout(window._ankiFrontImgTimer);
+    if (window._ankiFrontCountdown) clearInterval(window._ankiFrontCountdown);
+
+    var secondsLeft = 5;
+    var imgBox = document.getElementById('front-image-wrapper');
+    var btnText = document.getElementById('img-toggle-text');
+    var btn = document.getElementById('toggle-img-btn');
+
+    // 显示图片
+    window.showFrontImage = function() {
+        if (imgBox) imgBox.style.display = 'flex';
+        if (btnText) btnText.innerHTML = '隐藏图片';
+        if (btn) btn.classList.add('active');
+
+        if (window._ankiFrontCountdown) clearInterval(window._ankiFrontCountdown);
+        if (window._ankiFrontImgTimer) clearTimeout(window._ankiFrontImgTimer);
+    };
+
+    // 隐藏图片
+    window.hideFrontImage = function() {
+        if (imgBox) imgBox.style.display = 'none';
+        if (btnText) btnText.innerHTML = '显示图片';
+        if (btn) btn.classList.remove('active');
+
+        if (window._ankiFrontCountdown) clearInterval(window._ankiFrontCountdown);
+        if (window._ankiFrontImgTimer) clearTimeout(window._ankiFrontImgTimer);
+    };
+
+    // 按钮手动切换
+    window.toggleFrontImage = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        if (!imgBox) return;
+        if (imgBox.style.display === 'none') {
+            window.showFrontImage();
+        } else {
+            window.hideFrontImage();
+        }
+    };
+
+    // 启动 5 秒自动倒计时
+    if (imgBox && btnText) {
+        window._ankiFrontCountdown = setInterval(function() {
+            secondsLeft--;
+            if (imgBox.style.display === 'none') {
+                if (secondsLeft > 0) {
+                    btnText.innerHTML = '显示图片 (' + secondsLeft + 's)';
+                } else {
+                    btnText.innerHTML = '隐藏图片';
+                }
+            }
+        }, 1000);
+
+        window._ankiFrontImgTimer = setTimeout(function() {
+            window.showFrontImage();
+        }, 5000);
+    }
+})();
 </script>

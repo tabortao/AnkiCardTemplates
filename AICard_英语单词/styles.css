@@ -1,11 +1,10 @@
-/* ===== AICard 深调豆沙绿商务简约样式 ===== */
+/* ===== AICard 深润豆沙绿 商务简约样式 (高兼容版) ===== */
 
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    /* 加深后的背景底色：深润豆沙灰绿 */
     background-color: #ccd9d0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
     color: #1f2b23;
@@ -16,7 +15,7 @@ html, body {
     box-sizing: border-box;
 }
 
-/* 主卡片容器：温润豆沙绿卡片面 */
+/* 主卡片容器 */
 .card.sage-theme {
     max-width: 580px;
     width: 92%;
@@ -46,6 +45,7 @@ html, body {
     border-radius: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
+    z-index: 10;
 }
 
 .img-toggle-btn:hover {
@@ -69,7 +69,7 @@ html, body {
     text-align: center;
 }
 
-/* 英语字段：加大、加粗并采用深沉豆沙墨绿 */
+/* 英语字段：加大加粗深色墨绿 */
 .word-text.en-main {
     font-size: 36px;
     font-weight: 700;
@@ -140,22 +140,12 @@ html, body {
     100% { transform: scale(1); }
 }
 
-/* 图片区域与折叠动画 */
+/* 图片区域：移除可能导致老浏览器卡死的高度折叠动画，改用可靠的流式布局 */
 .image-wrapper {
     margin: 16px 0;
     display: flex;
     justify-content: center;
-    transition: all 0.3s ease-in-out;
-    opacity: 1;
-    max-height: 300px;
-    overflow: hidden;
-}
-
-.image-wrapper.is-hidden {
-    opacity: 0;
-    max-height: 0;
-    margin: 0;
-    pointer-events: none;
+    align-items: center;
 }
 
 .image-wrapper img {
@@ -174,7 +164,7 @@ html, body {
     margin: 22px 0 18px 0;
 }
 
-/* 例句模块（加深底色与侧边线条） */
+/* 例句模块 */
 .sentence-block {
     background-color: #dae6de;
     border-left: 4px solid #5a8069;
@@ -211,7 +201,7 @@ html, body {
     padding-top: 8px;
 }
 
-/* 移动端适配 */
+/* 移动端与 AnkiDroid 适配 */
 @media (max-width: 480px) {
     .card.sage-theme {
         width: 100% !important;
@@ -229,7 +219,7 @@ html, body {
     }
 
     .word-text.en-main {
-        font-size: 30px; /* 移动端大字号加粗 */
+        font-size: 30px;
     }
 
     .meaning-text {
