@@ -1,7 +1,7 @@
 <!-- AICard_英语单词 - 正面模板 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <div class="card sage-theme">
-    <!-- 右上角图片显隐切换按钮（仅在有图片时显示） -->
+    <!-- 右上角图片显隐切换按钮 -->
     {{#图片}}
     <button id="toggle-img-btn" class="img-toggle-btn" title="点击显示/隐藏图片" onclick="event.stopPropagation(); toggleImageManual()">
         <svg class="eye-icon" viewBox="0 0 24 24" width="14" height="14">
@@ -11,17 +11,17 @@
     </button>
     {{/图片}}
 
-    <!-- 英语单词（居中） -->
+    <!-- 英语单词（大字号 + 加粗居中） -->
     <div class="word-container">
         <span class="word-text en-main">{{英语}}</span>
         <button class="tts-btn" title="朗读" onclick="event.stopPropagation(); playTTS(this, '{{英语}}', 'en-US-AriaNeural')">
-            <svg class="speaker-icon" viewBox="0 0 24 24" width="20" height="20">
+            <svg class="speaker-icon" viewBox="0 0 24 24" width="22" height="22">
                 <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
             </svg>
         </button>
     </div>
 
-    <!-- 图片区域（默认隐藏） -->
+    <!-- 图片区域（默认隐藏，5秒自动展开） -->
     {{#图片}}
     <div id="image-wrapper" class="image-wrapper is-hidden">
         {{图片}}
@@ -30,7 +30,6 @@
 </div>
 
 <script>
-// 1. TTS 播放逻辑
 async function playTTS(btn, text, voice) {
     if (!text || text.trim() === "") return;
     if (btn && (btn.classList.contains('loading') || btn.classList.contains('playing'))) return;
@@ -81,7 +80,6 @@ async function playTTS(btn, text, voice) {
     }
 }
 
-// 2. 图片显隐与 5 秒倒计时逻辑
 let autoRevealTimer = null;
 let countdownInterval = null;
 let secondsLeft = 5;
@@ -120,7 +118,6 @@ function toggleImageManual() {
     }
 }
 
-// 启动 5 秒自动显示机制
 const imgContainer = document.getElementById('image-wrapper');
 if (imgContainer) {
     countdownInterval = setInterval(() => {

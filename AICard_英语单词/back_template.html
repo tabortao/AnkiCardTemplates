@@ -1,11 +1,11 @@
 <!-- AICard_英语单词 - 背面模板 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <div class="card sage-theme">
-    <!-- 英语单词（居中） -->
+    <!-- 英语单词（大字号 + 加粗居中） -->
     <div class="word-container">
         <span class="word-text en-main">{{英语}}</span>
         <button id="btn-en-word" class="tts-btn" title="朗读英文" onclick="event.stopPropagation(); playTTS(this, '{{英语}}', 'en-US-AriaNeural')">
-            <svg class="speaker-icon" viewBox="0 0 24 24" width="20" height="20">
+            <svg class="speaker-icon" viewBox="0 0 24 24" width="22" height="22">
                 <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
             </svg>
         </button>
@@ -21,7 +21,7 @@
         </button>
     </div>
 
-    <!-- 图片区域（背面正常显示） -->
+    <!-- 图片区域 -->
     {{#图片}}
     <div class="image-wrapper">
         {{图片}}
@@ -108,7 +108,7 @@ async function playTTS(btn, text, voice) {
     }
 }
 
-// 背面自动连播：英语 -> 汉语 -> 英语例句
+// 背面自动连播
 async function autoPlayBackSequence() {
     const enWord = `{{英语}}`.trim();
     const zhWord = `{{汉语}}`.trim();

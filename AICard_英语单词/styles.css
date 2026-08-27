@@ -1,13 +1,14 @@
-/* ===== AICard 豆沙绿商务简约样式 ===== */
+/* ===== AICard 深调豆沙绿商务简约样式 ===== */
 
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: #f2f5f3;
+    /* 加深后的背景底色：深润豆沙灰绿 */
+    background-color: #ccd9d0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-    color: #2e3832;
+    color: #1f2b23;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -15,17 +16,17 @@ html, body {
     box-sizing: border-box;
 }
 
-/* 主卡片容器 */
+/* 主卡片容器：温润豆沙绿卡片面 */
 .card.sage-theme {
     max-width: 580px;
     width: 92%;
     margin: 24px auto;
-    padding: 32px 24px 28px 24px;
-    background-color: #ffffff;
-    border: 1px solid #dce4df;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(46, 56, 50, 0.05);
-    position: relative; /* 为右上角按钮定位 */
+    padding: 34px 26px 30px 26px;
+    background-color: #e5eee8;
+    border: 1px solid #b3c5ba;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(35, 52, 42, 0.08);
+    position: relative;
 }
 
 /* 右上角图片显隐切换按钮 */
@@ -36,26 +37,26 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: #edf2ee;
-    border: 1px solid #d3dfd7;
-    color: #5c6c62;
+    background: #d4e2d8;
+    border: 1px solid #b6c9be;
+    color: #385041;
     font-size: 11px;
-    font-weight: 500;
-    padding: 4px 8px;
+    font-weight: 600;
+    padding: 4px 9px;
     border-radius: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .img-toggle-btn:hover {
-    background: #e2ebe4;
-    color: #3b5747;
+    background: #c3d6c8;
+    color: #1f3326;
 }
 
 .img-toggle-btn.active {
-    background: #e0ece4;
-    color: #3b5747;
-    border-color: #bad3c3;
+    background: #bdd2c3;
+    color: #1d3325;
+    border-color: #9cb5a5;
 }
 
 /* 单词居中容器 */
@@ -68,12 +69,13 @@ html, body {
     text-align: center;
 }
 
+/* 英语字段：加大、加粗并采用深沉豆沙墨绿 */
 .word-text.en-main {
-    font-size: 28px;
-    font-weight: 600;
-    color: #3b5747;
-    letter-spacing: 0.3px;
-    line-height: 1.2;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1d3627;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
 }
 
 /* 中文释义居中容器 */
@@ -87,9 +89,9 @@ html, body {
 }
 
 .meaning-text {
-    font-size: 17px;
-    font-weight: 500;
-    color: #5c6c62;
+    font-size: 18px;
+    font-weight: 600;
+    color: #405749;
 }
 
 /* 播放图标按钮 */
@@ -97,11 +99,11 @@ html, body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #edf2ee;
-    border: 1px solid #d3dfd7;
-    color: #4b6857;
-    width: 32px;
-    height: 32px;
+    background: #d4e2d8;
+    border: 1px solid #b6c9be;
+    color: #2b4535;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     cursor: pointer;
     padding: 0;
@@ -110,13 +112,13 @@ html, body {
 }
 
 .tts-btn:hover {
-    background: #dce7e0;
-    color: #334a3d;
+    background: #c0d3c5;
+    color: #1a2e23;
 }
 
 .tts-btn-sub {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
 }
 
 /* 播放中状态 */
@@ -126,9 +128,9 @@ html, body {
 }
 
 .tts-btn.playing {
-    background: #4b6857;
+    background: #335440;
     color: #ffffff;
-    border-color: #4b6857;
+    border-color: #335440;
     animation: pulse 1.2s infinite;
 }
 
@@ -160,27 +162,27 @@ html, body {
     max-width: 100%;
     max-height: 220px;
     height: auto;
-    border-radius: 6px;
-    border: 1px solid #e5ebe7;
+    border-radius: 8px;
+    border: 1px solid #c0d1c6;
     object-fit: contain;
 }
 
 /* 分隔细线 */
 .divider {
     height: 1px;
-    background-color: #e5ebe7;
-    margin: 20px 0 16px 0;
+    background-color: #c9d8ce;
+    margin: 22px 0 18px 0;
 }
 
-/* 例句模块（左对齐） */
+/* 例句模块（加深底色与侧边线条） */
 .sentence-block {
-    background-color: #f7faf8;
-    border-left: 3px solid #789984;
-    padding: 12px 14px;
-    border-radius: 0 6px 6px 0;
+    background-color: #dae6de;
+    border-left: 4px solid #5a8069;
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     text-align: left;
 }
 
@@ -192,20 +194,21 @@ html, body {
 }
 
 .sentence-en {
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 500;
     line-height: 1.5;
-    color: #2e3832;
+    color: #1b2e23;
 }
 
 .sentence-zh {
-    font-size: 14px;
+    font-size: 14.5px;
     line-height: 1.5;
-    color: #687a6f;
+    color: #486151;
 }
 
 .sentence-zh-row {
-    border-top: 1px dashed #e1e9e3;
-    padding-top: 6px;
+    border-top: 1px dashed #bfd0c5;
+    padding-top: 8px;
 }
 
 /* 移动端适配 */
@@ -213,31 +216,31 @@ html, body {
     .card.sage-theme {
         width: 100% !important;
         margin: 0 !important;
-        padding: 24px 14px 18px 14px !important;
+        padding: 24px 16px 20px 16px !important;
         border-radius: 0;
         box-shadow: none;
     }
 
     .img-toggle-btn {
-        top: 8px;
-        right: 8px;
+        top: 10px;
+        right: 10px;
         font-size: 10px;
-        padding: 3px 6px;
+        padding: 3px 7px;
     }
 
     .word-text.en-main {
-        font-size: 24px;
+        font-size: 30px; /* 移动端大字号加粗 */
     }
 
     .meaning-text {
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .sentence-en {
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .sentence-zh {
-        font-size: 13px;
+        font-size: 13.5px;
     }
 }
