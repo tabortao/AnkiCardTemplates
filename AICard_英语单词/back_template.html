@@ -1,0 +1,142 @@
+<!-- AICard_英语单词 - 背面模板 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<div class="card sage-theme">
+    <!-- 英语单词（居中） -->
+    <div class="word-container">
+        <span class="word-text en-main">{{英语}}</span>
+        <button id="btn-en-word" class="tts-btn" title="朗读英文" onclick="event.stopPropagation(); playTTS(this, '{{英语}}', 'en-US-AriaNeural')">
+            <svg class="speaker-icon" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- 中文释义（居中） -->
+    <div class="meaning-container">
+        <span class="meaning-text">{{汉语}}</span>
+        <button id="btn-zh-word" class="tts-btn tts-btn-sub" title="朗读中文" onclick="event.stopPropagation(); playTTS(this, '{{汉语}}', 'zh-CN-XiaoxiaoNeural')">
+            <svg class="speaker-icon" viewBox="0 0 24 24" width="16" height="16">
+                <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- 图片区域 -->
+    {{#图片}}
+    <div class="image-wrapper">
+        {{图片}}
+    </div>
+    {{/图片}}
+
+    <!-- 分隔线 -->
+    <div class="divider"></div>
+
+    <!-- 例句区域 -->
+    {{#英语句子}}
+    <div class="sentence-block">
+        <div class="sentence-row">
+            <span class="sentence-en">{{英语句子}}</span>
+            <button id="btn-en-sentence" class="tts-btn tts-btn-sub" title="朗读例句" onclick="event.stopPropagation(); playTTS(this, '{{英语句子}}', 'en-US-AriaNeural')">
+                <svg class="speaker-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                </svg>
+            </button>
+        </div>
+
+        {{#英语句子翻译}}
+        <div class="sentence-row sentence-zh-row">
+            <span class="sentence-zh">{{英语句子翻译}}</span>
+            <button class="tts-btn tts-btn-sub" title="朗读例句翻译" onclick="event.stopPropagation(); playTTS(this, '{{英语句子翻译}}', 'zh-CN-XiaoxiaoNeural')">
+                <svg class="speaker-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-2.5 9.77H8.5v-2h3V6.91L7.41 11H4v2h3.41L11.5 17.09V13zM16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                </svg>
+            </button>
+        </div>
+        {{/英语句子翻译}}
+    </div>
+    {{/英语句子}}
+</div>
+
+<script>
+// 单项 TTS 播放函数
+async function playTTS(btn, text, voice) {
+    if (!text || text.trim() === "") return;
+    if (btn && (btn.classList.contains('loading') || btn.classList.contains('playing'))) return;
+
+    if (btn) btn.classList.add('loading');
+
+    try {
+        const response = await fetch('https://tts.wangwangit.com/v1/audio/speech', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                input: text,
+                voice: voice,
+                speed: 1.0,
+                pitch: "0",
+                style: "general"
+            })
+        });
+
+        if (!response.ok) throw new Error('TTS 请求失败');
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+
+        if (btn) {
+            btn.classList.remove('loading');
+            btn.classList.add('playing');
+        }
+
+        return new Promise((resolve) => {
+            audio.onended = () => {
+                if (btn) btn.classList.remove('playing');
+                resolve();
+            };
+            audio.onerror = () => {
+                if (btn) btn.classList.remove('playing');
+                resolve();
+            };
+            audio.play();
+        });
+    } catch (err) {
+        console.error(err);
+        if (btn) {
+            btn.classList.remove('loading');
+            btn.classList.remove('playing');
+        }
+    }
+}
+
+// 背面自动连播序列：英语 -> 汉语 -> 英语例句
+async function autoPlayBackSequence() {
+    const enWord = `{{英语}}`.trim();
+    const zhWord = `{{汉语}}`.trim();
+    const enSentence = `{{英语句子}}`.trim();
+
+    const enBtn = document.getElementById('btn-en-word');
+    const zhBtn = document.getElementById('btn-zh-word');
+    const sentBtn = document.getElementById('btn-en-sentence');
+
+    // 1. 播放英语单词
+    if (enWord) {
+        await playTTS(enBtn, enWord, 'en-US-AriaNeural');
+        await new Promise(r => setTimeout(r, 260)); // 短暂间歇
+    }
+
+    // 2. 播放中文释义
+    if (zhWord) {
+        await playTTS(zhBtn, zhWord, 'zh-CN-XiaoxiaoNeural');
+        await new Promise(r => setTimeout(r, 260));
+    }
+
+    // 3. 播放英文例句
+    if (enSentence) {
+        await playTTS(sentBtn, enSentence, 'en-US-AriaNeural');
+    }
+}
+
+// 进入背面后启动自动播放
+setTimeout(autoPlayBackSequence, 150);
+</script>
