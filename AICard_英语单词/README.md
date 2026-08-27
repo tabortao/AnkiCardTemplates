@@ -11,8 +11,8 @@
 - **背面自动连播序列**：翻至卡片背面时，系统会自动按顺序连播 **“英文单词 ➔ 中文释义 ➔ 英文例句”**，并同步高亮当前朗读项。
 - **全平台自适应**：完美兼容 Anki Desktop（Windows / macOS / Linux）、AnkiDroid（Android）以及 AnkiMobile（iOS）。
 
-![AICard_英语单词_正面](docs\image\AICard_英语单词_正面.png)
-![AICard_英语单词_背面](docs\image\AICard_英语单词_背面.png)
+![AICard_英语单词_正面](..\docs\image\AICard_英语单词_正面.png)
+![AICard_英语单词_背面](..\docs\image\AICard_英语单词_背面.png)
 
 ---
 
