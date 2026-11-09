@@ -48,7 +48,7 @@
 
 ## ⚙️ TTS 引擎配置与自定义
 
-模板默认调用 `https://tts.wangwangit.com/v1/audio/speech` 接口。
+模板默认调用 `https://tts.sdgarden.top/v1/audio/speech` 接口。
 
 ### 1. 声音模型配置
 在正面与背面模板的 JavaScript 中，您可以根据偏好调整发音人角色：
